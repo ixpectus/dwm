@@ -18,7 +18,8 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#073642";
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -64,15 +65,24 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "/home/ixpectus/scripts/dmenu/run", NULL };
+static const char *termcmd[]  = { "st", "-e", "tmux", NULL};
+static const char *lock[]  = { "i3lock", "-e", "-f", "-c", "1d2021", NULL};
 static const char *flatmenucmd[]  = { "/home/ixpectus/scripts/dmenu/flat.sh", NULL };
 static const char *vpncmd[]  = { "/home/ixpectus/scripts/vpnAvito", NULL };
 static const char *forceedpi[]  = { "/home/ixpectus/scripts/forceEdpi", NULL };
+static const char *scrot[]  = { "/home/ixpectus/scripts/scrot_dmenu", NULL };
+static const char *kp[]  = { "/home/ixpectus/scripts/dmenu/kp", NULL };
+static const char *calc[]  = { "/home/ixpectus/scripts/dmenu/calc", NULL };
+static const char *openmarks[]  = { "/home/ixpectus/scripts/dmenu/dmarksShort", "/home/ixpectus/projects/tasks/marks", NULL };
 
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
+	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kp } },
+	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = openmarks } },
+	{ MODKEY|ShiftMask,             XK_c,      spawn,          {.v = calc } },
+	{ MODKEY,                       XK_q,      spawn,          {.v = lock } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_o,      spawn,          {.v = flatmenucmd } },
