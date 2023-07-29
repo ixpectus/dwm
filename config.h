@@ -9,9 +9,14 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+/* static const char *fonts[]          = { */ 
+/*   "MesloLGS Nerd Font:style=Regular:pixelsize=14:antialias=true:autohint=true", */
+/*   "EmojiOne:style=Regular:pixelsize=14:antialias=true:autohint=true", */
+/* }; */
+
 static const char *fonts[]          = { 
-  "MesloLGS Nerd Font:style=Regular:pixelsize=14:antialias=true:autohint=true",
-  "EmojiOne:style=Regular:pixelsize=14:antialias=true:autohint=true",
+  "MesloLGS Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
+  "EmojiOne:style=Regular:pixelsize=22:antialias=true:autohint=true",
 };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
@@ -38,6 +43,7 @@ static const Rule rules[] = {
 	{ "TelegramDesktop",     NULL,       NULL,       1 << 2,            0,           0 },
 	{ "firefox",             NULL,       NULL,       1 << 3,       0,           0 },
 	{ "Slack",               NULL,       NULL,       1 << 6,       0,           0 },
+	{ "Element",     NULL,       NULL,       1 << 6,       0,           0 },
 };
 
 /* layout(s) */
@@ -66,6 +72,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "/home/ixpectus/scripts/dmenu/run", NULL };
+static const char *tmuxnewwindow[] = { "tmux new-window", NULL };
 static const char *termcmd[]  = { "st", "-e", "tmux", NULL};
 static const char *lock[]  = { "i3lock", "-e", "-f", "-c", "1d2021", NULL};
 static const char *flatmenucmd[]  = { "/home/ixpectus/scripts/dmenu/flat.sh", NULL };
@@ -75,6 +82,11 @@ static const char *scrot[]  = { "/home/ixpectus/scripts/scrot_dmenu", NULL };
 static const char *kp[]  = { "/home/ixpectus/scripts/dmenu/kp", NULL };
 static const char *calc[]  = { "/home/ixpectus/scripts/dmenu/calc", NULL };
 static const char *openmarks[]  = { "/home/ixpectus/scripts/dmenu/dmarksShort", "/home/ixpectus/projects/tasks/marks", NULL };
+static const char *ctrlt[]  = { "xdotool", "getactivewindow", "key", "ctrl+t",  NULL };
+static const char *ctrlw[]  = { "xdotool", "getactivewindow", "key", "ctrl+w",  NULL };
+static const char *ctrla[]  = { "xdotool", "getactivewindow", "key", "ctrl+a",  NULL };
+static const char *ctrlc[]  = { "xdotool", "getactivewindow", "key", "ctrl+c",  NULL };
+static const char *ctrlv[]  = { "xdotool", "getactivewindow", "key", "ctrl+v",  NULL };
 
 
 static Key keys[] = {
@@ -82,7 +94,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kp } },
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = openmarks } },
 	{ MODKEY|ShiftMask,             XK_c,      spawn,          {.v = calc } },
-	{ MODKEY,                       XK_q,      spawn,          {.v = lock } },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = lock } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = ctrlt } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = ctrlw } },
+	{ MODKEY,                       XK_a,      spawn,          {.v = ctrla } },
+	{ MODKEY,                       XK_c,      spawn,          {.v = ctrlc } },
+	{ MODKEY,                       XK_v,      spawn,          {.v = ctrlv } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_o,      spawn,          {.v = flatmenucmd } },
@@ -98,7 +115,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
+	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
