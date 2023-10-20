@@ -9,15 +9,15 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-/* static const char *fonts[]          = { */ 
-/*   "MesloLGS Nerd Font:style=Regular:pixelsize=14:antialias=true:autohint=true", */
-/*   "EmojiOne:style=Regular:pixelsize=14:antialias=true:autohint=true", */
-/* }; */
-
 static const char *fonts[]          = { 
-  "MesloLGS Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true",
-  "EmojiOne:style=Regular:pixelsize=22:antialias=true:autohint=true",
+  "MesloLGS Nerd Font:style=Regular:pixelsize=33:antialias=true:autohint=true",
+  "EmojiOne:style=Regular:pixelsize=33:antialias=true:autohint=true",
 };
+
+/* static const char *fonts[]          = { */ 
+/*   "MesloLGS Nerd Font:style=Regular:pixelsize=22:antialias=true:autohint=true", */
+/*   "EmojiOne:style=Regular:pixelsize=22:antialias=true:autohint=true", */
+/* }; */
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
@@ -42,6 +42,7 @@ static const Rule rules[] = {
 	/* class                  instance    title       tags mask     isfloating   monitor */
 	{ "TelegramDesktop",     NULL,       NULL,       1 << 2,            0,           0 },
 	{ "firefox",             NULL,       NULL,       1 << 3,       0,           0 },
+	{ "Slack",               NULL,       NULL,       1 << 6,       0,           0 },
 	{ "Slack",               NULL,       NULL,       1 << 6,       0,           0 },
 	{ "Element",     NULL,       NULL,       1 << 6,       0,           0 },
 };
@@ -89,44 +90,52 @@ static const char *ctrlc[]  = { "xdotool", "getactivewindow", "key", "ctrl+c",  
 static const char *ctrlv[]  = { "xdotool", "getactivewindow", "key", "ctrl+v",  NULL };
 
 
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kp } },
+	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kp } }, //ctrl+shift+k
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = openmarks } },
-	{ MODKEY|ShiftMask,             XK_c,      spawn,          {.v = calc } },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = lock } },
-	{ MODKEY,                       XK_t,      spawn,          {.v = ctrlt } },
-	{ MODKEY,                       XK_w,      spawn,          {.v = ctrlw } },
-	{ MODKEY,                       XK_a,      spawn,          {.v = ctrla } },
-	{ MODKEY,                       XK_c,      spawn,          {.v = ctrlc } },
-	{ MODKEY,                       XK_v,      spawn,          {.v = ctrlv } },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+
+
+	{ ControlMask|ShiftMask,             XK_k,      spawn,          {.v = kp } }, //ctrl+shift+k
+	{ ControlMask|ShiftMask,             XK_m,      spawn,          {.v = openmarks } },
+	{ ControlMask|ShiftMask,             XK_q,      spawn,          {.v = lock } },
+	{ ControlMask|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ ControlMask|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
+
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_o,      spawn,          {.v = flatmenucmd } },
+	{ ControlMask,                  XK_Return, spawn,          {.v = termcmd } },
+
+
 	{ MODKEY,                       XK_n,      spawn,          {.v = vpncmd } },
+	{ ControlMask|ShiftMask,        XK_n,      spawn,          {.v = vpncmd } },
+
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+
+	{ MODKEY,                       XK_q,      killclient,     {0} },
+	{ ControlMask,                  XK_q,      killclient,     {0} },
+
   { MODKEY,                       XK_f,      fullscreen,     {0} },
-  { MODKEY,                       XK_F7,     spawn,          {.v = forceedpi } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+  { ControlMask|ShiftMask,        XK_f,      fullscreen,     {0} },
+
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	/* { MODKEY,                       XK_i,      incnmaster,     {.i = +1 } }, */
-	/* { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } }, */
+
+	{ MODKEY|ShiftMask,             XK_Down,   focusstack,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_Up,     focusstack,     {.i = -1 } },
+
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
+	{ MODKEY|ShiftMask,             XK_Left,   setmfact,       {.f = -0.05} },
+	{ MODKEY|ShiftMask,             XK_Right,  setmfact,       {.f = +0.05} },
+
+	{ MODKEY,                       XK_o,      spawn,          {.v = flatmenucmd } },
+	{ ControlMask|ShiftMask,        XK_o,      spawn,          {.v = flatmenucmd } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -136,7 +145,28 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+
+	// { MODKEY,                       XK_t,      spawn,          {.v = ctrlt } },
+	// { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = calc } },
+	// { MODKEY,                       XK_w,      spawn,          {.v = ctrlw } },
+	// { MODKEY,                       XK_a,      spawn,          {.v = ctrla } },
+	// { MODKEY,                       XK_c,      spawn,          {.v = ctrlc } },
+	// { MODKEY,                       XK_v,      spawn,          {.v = ctrlv } },
+ //  { MODKEY,                       XK_F7,     spawn,          {.v = forceedpi } },
+	// { MODKEY,                       XK_b,      togglebar,      {0} },
+	/* { MODKEY,                       XK_i,      incnmaster,     {.i = +1 } }, */
+	/* { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } }, */
+	// { MODKEY,                       XK_space,  setlayout,      {0} },
+	// { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	// { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	// { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	/* { MODKEY|ShiftMask,             XK_q,      quit,           {0} }, */
+	// { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+	// { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+	// { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	// { MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
+	// { MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
+	// { MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
 };
 
 /* button definitions */
