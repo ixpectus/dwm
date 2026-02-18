@@ -10,13 +10,13 @@ static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { 
-  "MesloLGS Nerd Font:style=Regular:pixelsize=33:antialias=true:autohint=true",
-  "EmojiOne:style=Regular:pixelsize=33:antialias=true:autohint=true",
+  "MesloLGS Nerd Font:style=Regular:pixelsize=16:antialias=true:autohint=true",
+  "EmojiOne:style=Regular:pixelsize=16:antialias=true:autohint=true",
 };
 
 // static const char *fonts[]          = {  
-//   "MesloLGS Nerd Font:style=Regular:pixelsize=33:antialias=true:autohint=true", 
-//   "EmojiOne:style=Regular:pixelsize=33:antialias=true:autohint=true",
+//   "MesloLGS Nerd Font:style=Regular:pixelsize=16:antialias=true:autohint=true", 
+//   "EmojiOne:style=Regular:pixelsize=16:antialias=true:autohint=true",
 // }; 
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
@@ -40,11 +40,10 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class                  instance    title       tags mask     isfloating   monitor */
+	{ "obsidian",     NULL,       NULL,       1 << 0,            0,           0 },
 	{ "TelegramDesktop",     NULL,       NULL,       1 << 2,            0,           0 },
 	{ "firefox",             NULL,       NULL,       1 << 3,       0,           0 },
-	{ "Slack",               NULL,       NULL,       1 << 6,       0,           0 },
-	{ "Slack",               NULL,       NULL,       1 << 6,       0,           0 },
-	{ "Element",     NULL,       NULL,       1 << 6,       0,           0 },
+	{ "DBeaver",             NULL,       NULL,       1 << 5,       0,           0 },
 };
 
 /* layout(s) */
@@ -65,7 +64,8 @@ static const Layout layouts[] = {
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
+	{ ControlMask|ShiftMask,	KEY,      tag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -79,35 +79,38 @@ static const char *lock[]  = { "i3lock", "-e", "-f", "-c", "1d2021", NULL};
 static const char *flatmenucmd[]  = { "/home/ixpectus/scripts/dmenu/flat.sh", NULL };
 static const char *vpncmd[]  = { "/home/ixpectus/scripts/vpnAvito", NULL };
 static const char *forceedpi[]  = { "/home/ixpectus/scripts/forceEdpi", NULL };
+static const char *forceexternal[]  = { "/home/ixpectus/scripts/forceExternal", NULL };
 static const char *scrot[]  = { "/home/ixpectus/scripts/scrot_dmenu", NULL };
 static const char *kp[]  = { "/home/ixpectus/scripts/dmenu/kp", NULL };
 static const char *calc[]  = { "/home/ixpectus/scripts/dmenu/calc", NULL };
-static const char *openmarks[]  = { "/home/ixpectus/scripts/dmenu/dmarksShort", "/home/ixpectus/projects/tasks/marks", NULL };
-static const char *ctrlt[]  = { "xdotool", "getactivewindow", "key", "ctrl+t",  NULL };
-static const char *ctrlw[]  = { "xdotool", "getactivewindow", "key", "ctrl+w",  NULL };
-static const char *ctrla[]  = { "xdotool", "getactivewindow", "key", "ctrl+a",  NULL };
-static const char *ctrlc[]  = { "xdotool", "getactivewindow", "key", "ctrl+c",  NULL };
-static const char *ctrlv[]  = { "xdotool", "getactivewindow", "key", "ctrl+v",  NULL };
+static const char *ru[]  = { "/home/ixpectus/scripts/keySetRu", NULL };
+static const char *us[]  = { "/home/ixpectus/scripts/keySetUs", NULL };
+// static const char *openmarks[]  = { "/home/ixpectus/scripts/dmenu/dmarksShort", "/home/ixpectus/projects/tasks/marks", NULL };
+// static const char *ctrlt[]  = { "xdotool", "getactivewindow", "key", "ctrl+t",  NULL };
+// static const char *ctrlw[]  = { "xdotool", "getactivewindow", "key", "ctrl+w",  NULL };
+// static const char *ctrla[]  = { "xdotool", "getactivewindow", "key", "ctrl+a",  NULL };
+// static const char *ctrlc[]  = { "xdotool", "getactivewindow", "key", "ctrl+c",  NULL };
+// static const char *ctrlv[]  = { "xdotool", "getactivewindow", "key", "ctrl+v",  NULL };
 
 
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY|ShiftMask,             XK_k,      spawn,          {.v = kp } }, //ctrl+shift+k
-	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = openmarks } },
+	// { MODKEY|ShiftMask,             XK_o,      spawn,          {.v = openmarks } },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          {.v = lock } },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 
 
 	{ ControlMask|ShiftMask,             XK_k,      spawn,          {.v = kp } }, //ctrl+shift+k
-	{ ControlMask|ShiftMask,             XK_m,      spawn,          {.v = openmarks } },
+	// { ControlMask|ShiftMask,             XK_m,      spawn,          {.v = openmarks } },
 	{ ControlMask|ShiftMask,             XK_q,      spawn,          {.v = lock } },
 	{ ControlMask|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ ControlMask|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
 
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ ControlMask,                  XK_Return, spawn,          {.v = termcmd } },
+	// { ControlMask,                  XK_Return, spawn,          {.v = termcmd } },
 
 
 	{ MODKEY,                       XK_n,      spawn,          {.v = vpncmd } },
@@ -154,7 +157,10 @@ static Key keys[] = {
 	// { MODKEY,                       XK_a,      spawn,          {.v = ctrla } },
 	// { MODKEY,                       XK_c,      spawn,          {.v = ctrlc } },
 	// { MODKEY,                       XK_v,      spawn,          {.v = ctrlv } },
- //  { MODKEY,                       XK_F7,     spawn,          {.v = forceedpi } },
+       { MODKEY,                       XK_F7,     spawn,          {.v = forceedpi } },
+       { MODKEY,                       XK_F8,     spawn,          {.v = forceexternal } },
+       { MODKEY,                    XK_F9,     spawn,          {.v = us } },
+       { MODKEY,                       XK_F10,     spawn,          {.v = ru } },
 	// { MODKEY,                       XK_b,      togglebar,      {0} },
 	/* { MODKEY,                       XK_i,      incnmaster,     {.i = +1 } }, */
 	/* { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } }, */
